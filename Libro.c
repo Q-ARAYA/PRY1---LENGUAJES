@@ -32,7 +32,7 @@ void registrarLibro(Libro *lib) { //struct Libro* libro
     printf("Precio del libro: ");
     scanf("%f", lib->precioLibro);
 
-    printf("Año de publicacion: ");
+    printf("Anio de publicacion: ");
     scanf("%d", lib->anioPublicacion);
 
     lib->codigoLibro += 1;
@@ -48,11 +48,34 @@ void LiberarMemoria(Libro *lib) {
 }
 
 int main() {
-
-
     // Crear libro vacío
-    
     Libro lib = CrearLibro();
+    int opcion;
+    //Aqui se va a codificar el menu principal
+    printf ("----INVENTARIO DE LIBRERIA----\n");
+    printf ("--------MENU PRINCIPAL--------\n\n");
+    printf ("Ingresa el NUMERO de alguna de la opciones:\n\n");
+    printf ("1. Registrar libro\n");
+    printf ("2. Inventario\n");
+    printf ("3. Registrar cliente\n");
+    printf ("4. Crear pedido\n");
+    printf ("5. Estadistica\n");
+    printf ("6. Salir\n");
+
+    scanf ("%d", &opcion);
+    getchar();
+
+    switch (opcion) {
+    case 1:
+        registrarLibro(&lib);
+        break;
+    
+    case 6:
+        return 0;
+    
+    default:
+        break;
+    }
 
     // Registrar datos desde el usuario
     registrarLibro(&lib);
