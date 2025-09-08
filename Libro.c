@@ -1,23 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "buffer.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include "buffer.h"
 
 typedef struct {
     char* nombreLibro;
-    char* caracteres;
+    //char* caracteres;
     float* precioLibro;
     int codigoLibro;
-    int* anioPublicacion;
+    int* cantidad;
 } Libro;
 
 Libro CrearLibro() {
 
     Libro lib;
-    lib.caracteres = (char *)malloc(100 * sizeof(char));
+    //lib.caracteres = (char *)malloc(100 * sizeof(char));
     lib.nombreLibro = NULL;
     lib.precioLibro = (float*)malloc(sizeof(float));
-    lib.anioPublicacion  = (int*)malloc(sizeof(int));
+    lib.cantidad = (int*)malloc(sizeof(int));
     lib.codigoLibro = 0;
     return lib;
 }
@@ -26,62 +25,66 @@ void registrarLibro(Libro *lib) { //struct Libro* libro
 
     printf("Nombre del libro:");
     
-    scanf("%s", lib->caracteres);
-    lib->nombreLibro = espacioDeMemoria(lib->caracteres);
+    //scanf("%s", lib->nombreLibro);
+    lib->nombreLibro = espacioDeMemoria();
 
     printf("Precio del libro: ");
     scanf("%f", lib->precioLibro);
 
-    printf("Anio de publicacion: ");
-    scanf("%d", lib->anioPublicacion);
+    printf("Cantidad: ");
+    scanf("%d", lib->cantidad);
 
     lib->codigoLibro += 1;
-    printf("Libro registrado exitosamente, el codigo del libro es el siguiente: %d\n", lib->codigoLibro);
+    printf("Libro registrado exitosamente\nEl codigo del libro es el siguiente: %d\n", lib->codigoLibro);
+
+    int c = getchar(); //Fuente: https://rabbit.eng.miami.edu/class/een218/getchar.html
+    while (c != '\n' && c != EOF) {
+       
+    }
 }
+
+void guardarInformacion(Libro *lib){
+    FILE *archi;
+    char p1 = (lib->nombreLibro);
+    float *p2 = (lib->precioLibro);
+    int p3 = (lib->codigoLibro);
+    int p4 = (lib->cantidad);
+
+    archi = fopen("c:\\TEC CODIGO\\Lenguajes\\Proyectos\\P1\\Libros.txt","w");
+    fprintf(archi, "______________________\n");
+    fprintf(archi, "Nombre: %c\n", p1);
+    //fprintf(archi,"\n");
+    fprintf(archi, "Precio: %f\n", p2);
+    fprintf(archi, "Codigo: %d\n", p3);
+    fprintf(archi, "Cantidad: %d\n", p4);
+    fprintf(archi, "______________________\n");
+    fclose(archi);
+}
+
+//void eliminarLibro(Libro *lib {
+    
+    
+//})
 
 void LiberarMemoria(Libro *lib) {
     free(lib->nombreLibro);
     free(lib->precioLibro);
-    free(lib->caracteres);
+    //free(lib->caracteres);
     //free(lib->codigoLibro);
-    free(lib->anioPublicacion);
+    free(lib->cantidad);
+    lib->nombreLibro = NULL;
+    lib->precioLibro = NULL;
+    //lib->caracteres = NULL;
+    lib->cantidad = NULL;
 }
 
 int main() {
-    // Crear libro vacío
+    
     Libro lib = CrearLibro();
-    int opcion;
-    //Aqui se va a codificar el menu principal
-    printf ("----INVENTARIO DE LIBRERIA----\n");
-    printf ("--------MENU PRINCIPAL--------\n\n");
-    printf ("Ingresa el NUMERO de alguna de la opciones:\n\n");
-    printf ("1. Registrar libro\n");
-    printf ("2. Inventario\n");
-    printf ("3. Registrar cliente\n");
-    printf ("4. Crear pedido\n");
-    printf ("5. Estadistica\n");
-    printf ("6. Salir\n");
-
-    scanf ("%d", &opcion);
-    getchar();
-
-    switch (opcion) {
-    case 1:
-        registrarLibro(&lib);
-        break;
-    
-    case 6:
-        return 0;
-    
-    default:
-        break;
-    }
-
-    // Registrar datos desde el usuario
     registrarLibro(&lib);
-
-    // Liberar memoria
+    //guardarInformacion(&lib);
     LiberarMemoria(&lib);
-
+    
     return 0;
 }
+
