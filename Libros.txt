@@ -1,0 +1,10 @@
+Codigo: LIB1
+Nombre: Padre
+Precio: 10000.00
+Cantidad: 50
+;
+Codigo: LIB2
+Nombre: Hogares sanos
+Precio: 10000.00
+Cantidad: 20
+;
