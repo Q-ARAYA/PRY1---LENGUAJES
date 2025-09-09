@@ -1,7 +1,10 @@
-# include <stdio.h>
-# include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 # include "Libro.h"
 
+// -------------------------------------Guardar LIBRO------------------------------------------------------------------------------------
 
 // Lee la cadena caracter por caracter para determinar su espacio de memoria
 char* espacioDeMemoria() {
@@ -87,9 +90,8 @@ void guardarLibroEnTXT(Libro *lib) {
     fclose(archi);
 
     printf("\nLibro LIB%d registrado exitosamente\n\n", lib->codigoLibro);
-    system("pause");
-    printf("\n");
-    
+
+
 }
 
 void LiberarMemoriaLibro(Libro *lib) {
@@ -101,15 +103,119 @@ void LiberarMemoriaLibro(Libro *lib) {
     lib->cantidad = NULL;
 }
 
+// --------------------------------------------------Eliminar LIBRO----------------------------------------------------------------------
+
+void eliminarLibro(const char* codigoBuscado){
+    FILE *original = fopen("Libros.txt", "r");
+    if (!original) {
+        printf("No se pudo abrir Libros.txt\n");
+        return;
+    }
+
+    FILE *temp = fopen("Temp.txt", "w"); // archivo temporal para almacenar los libros que no se van a borrar
+    if (!temp) {
+        printf("No se pudo crear archivo temporal\n");
+        fclose(original);
+        return;
+    }
+
+    char linea[256];
+    bool encontrado = false;
+    bool copiar = true;
+
+    while (fgets(linea, sizeof(linea), original)) {
+        if (strncmp(linea, "Codigo:", 7) == 0) {
+            if (strstr(linea, codigoBuscado)) {
+                encontrado = true;
+                copiar = false;
+            } else {
+                copiar = true;
+            }
+        }
+
+        if (copiar) {
+            fputs(linea, temp);
+        }
+
+        if (linea[0] == ';') {
+            copiar = true;
+        }
+    }
+
+    fclose(original);
+    fclose(temp);
+
+    if (remove("Libros.txt") != 0 || rename("Temp.txt", "Libros.txt") != 0) {
+        perror("Error al actualizar archivo");
+        return;
+    }
+
+    if (encontrado) {
+        printf("\nLibro %s eliminado correctamente.\n\n", codigoBuscado);
+    } else {
+        printf("\nNo se encontró el libro con código %s.\n\n", codigoBuscado);
+    }
+}
+
+
+// --------------------------------------------------Funcs Auxliares----------------------------------------------------------------------
+
+char* solicitarCodigo(){
+    char* codigo = malloc(20 * sizeof(char));;
+    printf("Ingrese el codigo del libro EJEMPLO (LIB4)");
+    scanf("%19s", codigo);
+    return codigo;
+}
+
+// --------------------------------------------------MENU PRINCIPAL---------------------------------------------------------------------
+
+void inventarioDePrograma() {
+    int opcion;
+
+    // while para que el programa no termine si no se selecciona salir
+    while (1) {
+        printf("-------------------INVENTARIO DE LIBRERIA-------------------\n");
+        printf("Ingresa el NUMERO de alguna de las opciones:\n\n");
+        printf("1. Eliminar libro\n");
+        printf("2. Modificar Inventario (no implementado)\n");
+        printf("6. Volver\n");
+
+        scanf("%d", &opcion);
+        getchar(); // limpiar buffer
+
+        switch (opcion) {
+            case 1: {
+                
+                char* codigo = solicitarCodigo();
+                eliminarLibro(codigo);
+                free(codigo);
+                system("pause");
+                printf("\n");
+                break;
+            }
+
+            case 2: {
+
+            }
+            case 6:
+                return;
+            default:
+                printf("Opcion invalida.\n");
+                break;
+        }
+    }
+}
+
 int iniciarPrograma() {
     int opcion;
 
+    // while para que el programa no termine si no se selecciona salir
     while (1) {
         printf("-------------------INVENTARIO DE LIBRERIA-------------------\n");
         printf("-----------------------MENU PRINCIPAL-----------------------\n\n");
         printf("Ingresa el NUMERO de alguna de las opciones:\n\n");
         printf("1. Registrar libro\n");
-        printf("2. Inventario (no implementado)\n");
+        printf("2. Inventario\n");
         printf("3. Registrar cliente (no implementado)\n");
         printf("4. Crear pedido (no implementado)\n");
         printf("5. Estadistica (no implementado)\n");
@@ -120,14 +226,22 @@ int iniciarPrograma() {
 
         switch (opcion) {
             case 1: {
+                // Funciones para generar el libro y guardar en el .txt automaticamente
                 Libro lib = CrearLibro();
                 registrarLibro(&lib);
                 guardarLibroEnTXT(&lib);
                 LiberarMemoriaLibro(&lib);
+                system("pause");
+                printf("\n");
+                break;
+            }
+
+            case 2: {
+                inventarioDePrograma();
                 break;
             }
             case 6:
-                return 0;
+                return;
             default:
                 printf("Opcion invalida.\n");
                 break;

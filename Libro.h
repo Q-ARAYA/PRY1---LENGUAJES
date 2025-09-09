@@ -22,6 +22,7 @@ int obtenerSiguienteCodigo();
 void registrarLibro(Libro *lib);
 void guardarLibroEnTXT(Libro *lib);
 void LiberarMemoriaLibro(Libro *lib);
+void inventarioDePrograma();
 int iniciarPrograma();
 
 
