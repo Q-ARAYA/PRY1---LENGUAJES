@@ -21,6 +21,21 @@ Libro CrearLibro() {
     return lib;
 }
 
+int obtenerSiguienteCodigo() {
+    FILE *archi = fopen("Libros.txt", "r");
+    if (!archi) {
+        return 1; // Si no existe el archivo, el primer libro será LIB1
+    }
+
+    int codigo = 0;
+    while (fscanf(archi, "Codigo: %d\n", &codigo) == 1) {
+        // Este bucle se quedará con el último código leído
+    }
+
+    fclose(archi);
+    return codigo + 1;
+}
+
 void registrarLibro(Libro *lib) { //struct Libro* libro
 
     printf("Nombre del libro:");
@@ -34,7 +49,7 @@ void registrarLibro(Libro *lib) { //struct Libro* libro
     printf("Cantidad: ");
     scanf("%d", lib->cantidad);
 
-    lib->codigoLibro += 1;
+    lib->codigoLibro = obtenerSiguienteCodigo();
     int c = getchar(); //Fuente: https://rabbit.eng.miami.edu/class/een218/getchar.html
     while (c != '\n' && c != EOF) {
        
@@ -42,20 +57,23 @@ void registrarLibro(Libro *lib) { //struct Libro* libro
 }
 
 void guardarLibroEnTXT(Libro *lib){
-    FILE *archi = fopen("Libros.txt", "a"); // append para no sobrescribir
+    FILE *archi = fopen("Libros.txt", "a");
     if (!archi) {
         perror("No se pudo abrir Libros.txt");
         return;
     }
 
+    char codigoStr[20];
+    sprintf(codigoStr, "LIB%d", lib->codigoLibro);
+
+    fprintf(archi, "Codigo: %d\n", codigoStr);
     fprintf(archi, "Nombre: %s\n", lib->nombreLibro ? lib->nombreLibro : "(sin nombre)");
     fprintf(archi, "Precio: %.2f\n", lib->precioLibro ? *lib->precioLibro : 0.0f);
-    fprintf(archi, "Codigo: %d\n", lib->codigoLibro);
     fprintf(archi, "Cantidad: %d\n", lib->cantidad ? *lib->cantidad : 0);
     fprintf(archi, ";\n");
     fclose(archi);
 
-    printf("\nLibro registrado exitosamente \n\n");
+    printf("\nLibro: %d registrado exitosamente\n\n", codigoStr);
     system("pause");
 }
 
