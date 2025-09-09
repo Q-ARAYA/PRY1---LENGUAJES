@@ -35,38 +35,36 @@ void registrarLibro(Libro *lib) { //struct Libro* libro
     scanf("%d", lib->cantidad);
 
     lib->codigoLibro += 1;
-    printf("Libro registrado exitosamente\nEl codigo del libro es el siguiente: %d\n", lib->codigoLibro);
-
     int c = getchar(); //Fuente: https://rabbit.eng.miami.edu/class/een218/getchar.html
     while (c != '\n' && c != EOF) {
        
     }
 }
 
-void guardarInformacion(Libro *lib){
-    FILE *archi;
-    char p1 = (lib->nombreLibro);
-    float *p2 = (lib->precioLibro);
-    int p3 = (lib->codigoLibro);
-    int p4 = (lib->cantidad);
+void guardarLibroEnTXT(Libro *lib){
+    FILE *archi = fopen("Libros.txt", "a"); // append para no sobrescribir
+    if (!archi) {
+        perror("No se pudo abrir Libros.txt");
+        return;
+    }
 
-    archi = fopen("c:\\TEC CODIGO\\Lenguajes\\Proyectos\\P1\\Libros.txt","w");
-    fprintf(archi, "______________________\n");
-    fprintf(archi, "Nombre: %c\n", p1);
-    //fprintf(archi,"\n");
-    fprintf(archi, "Precio: %f\n", p2);
-    fprintf(archi, "Codigo: %d\n", p3);
-    fprintf(archi, "Cantidad: %d\n", p4);
-    fprintf(archi, "______________________\n");
+    fprintf(archi, "Nombre: %s\n", lib->nombreLibro ? lib->nombreLibro : "(sin nombre)");
+    fprintf(archi, "Precio: %.2f\n", lib->precioLibro ? *lib->precioLibro : 0.0f);
+    fprintf(archi, "Codigo: %d\n", lib->codigoLibro);
+    fprintf(archi, "Cantidad: %d\n", lib->cantidad ? *lib->cantidad : 0);
+    fprintf(archi, ";\n");
     fclose(archi);
+
+    printf("\nLibro registrado exitosamente \n\n");
+    system("pause");
 }
 
 //void eliminarLibro(Libro *lib {
     
     
-//})
+//}
 
-void LiberarMemoria(Libro *lib) {
+void LiberarMemoriaLibro(Libro *lib) {
     free(lib->nombreLibro);
     free(lib->precioLibro);
     //free(lib->caracteres);
@@ -79,12 +77,39 @@ void LiberarMemoria(Libro *lib) {
 }
 
 int main() {
-    
-    Libro lib = CrearLibro();
-    registrarLibro(&lib);
-    //guardarInformacion(&lib);
-    LiberarMemoria(&lib);
-    
-    return 0;
+    int opcion;
+
+    while (1){
+        //Aqui se va a codificar el menu principal
+        printf ("----INVENTARIO DE LIBRERIA----\n");
+        printf ("--------MENU PRINCIPAL--------\n\n");
+        printf ("Ingresa el NUMERO de alguna de la opciones:\n\n");
+        printf ("1. Registrar libro\n");
+        printf ("2. Inventario\n");
+        printf ("3. Registrar cliente\n");
+        printf ("4. Crear pedido\n");
+        printf ("5. Estadistica\n");
+        printf ("6. Salir\n");
+
+        scanf ("%d", &opcion);
+        getchar();
+
+        switch (opcion) {
+        case 1:
+            // Crear libro vacío
+            Libro lib = CrearLibro();
+            registrarLibro(&lib);
+            guardarLibroEnTXT(&lib);
+            LiberarMemoriaLibro(&lib);
+            break;
+
+        case 6:
+            return 0;
+        
+        default:
+            break;
+        }
+    }
+
 }
 
