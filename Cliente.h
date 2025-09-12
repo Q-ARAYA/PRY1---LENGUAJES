@@ -1,14 +1,11 @@
-// Cliente.h
 #ifndef CLIENTE_H
 #define CLIENTE_H
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define ARCHIVO_CLIENTES "Clientes.txt"
-#define MAX_CEDULA 20
-#define MAX_NOMBRE 100
-#define MAX_TELEFONO 15
 
 typedef struct {
     char *cedula;
@@ -16,7 +13,11 @@ typedef struct {
     char *telefono;
 } Cliente;
 
-// Prototipos de funciones
-// Proximamente...
+Cliente CrearCliente();
+void registrarCliente();
+bool validarCedulaUnica(const char* cedula);
+bool validarTelefono(const char* telefono);
+void guardarClienteEnTXT(Cliente *cli);
+void LiberarMemoriaCliente(Cliente *cli);
 
 #endif

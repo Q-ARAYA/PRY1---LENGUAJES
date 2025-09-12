@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-# include "Libro.h"
+#include "Libro.h"
+#include "Cliente.h"
 
 // -------------------------------------Guardar LIBRO------------------------------------------------------------------------------------
 
@@ -216,7 +217,7 @@ int iniciarPrograma() {
         printf("Ingresa el NUMERO de alguna de las opciones:\n\n");
         printf("1. Registrar libro\n");
         printf("2. Inventario\n");
-        printf("3. Registrar cliente (no implementado)\n");
+        printf("3. Registrar cliente\n");
         printf("4. Crear pedido (no implementado)\n");
         printf("5. Estadistica (no implementado)\n");
         printf("6. Salir\n");
@@ -238,6 +239,13 @@ int iniciarPrograma() {
 
             case 2: {
                 inventarioDePrograma();
+                break;
+            }
+
+            case 3: {
+                registrarCliente();
+                system("pause");
+                printf("\n");
                 break;
             }
             case 6:

@@ -1,5 +1,5 @@
 #include "Libro.h"
-#include "Libro.c"
+#include "Cliente.h"
 
 int main() {
     return iniciarPrograma();
