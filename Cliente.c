@@ -1,6 +1,7 @@
 #include "Cliente.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern char* espacioDeMemoria();
 
@@ -11,6 +12,8 @@ Cliente CrearCliente() {
     cli.telefono = NULL;
     return cli;
 }
+
+// ------------------------------------------------------------- Registrar Cliente
 
 bool validarCedulaUnica(const char* cedula) {
     FILE *archi = fopen(ARCHIVO_CLIENTES, "r");
@@ -89,7 +92,7 @@ void registrarCliente() {
     guardarClienteEnTXT(&cli);
     
     // Liberar memoria
-    LiberarMemoriaCliente(&cli);
+    liberarMemoriaCliente(&cli);
 }
 
 void guardarClienteEnTXT(Cliente *cli) {
@@ -108,11 +111,79 @@ void guardarClienteEnTXT(Cliente *cli) {
     printf("\nCliente registrado exitosamente!\n\n");
 }
 
-void LiberarMemoriaCliente(Cliente *cli) {
+void liberarMemoriaCliente(Cliente *cli) {
     free(cli->cedula);
     free(cli->nombre);
     free(cli->telefono);
     cli->cedula = NULL;
     cli->nombre = NULL;
     cli->telefono = NULL;
+}
+
+// ------------------------------------------------------------- Eliminar Cliente
+
+void eliminarCliente(const char* cedulaBuscada) {
+    FILE *original = fopen("Clientes.txt", "r");
+    if (!original) {
+        printf("No se pudo abrir %s\n", "Clientes.txt");
+        return;
+    }
+
+    FILE *temp = fopen("Temp.txt", "w");
+    if (!temp) {
+        printf("No se pudo crear archivo temporal\n");
+        fclose(original);
+        return;
+    }
+
+    char linea[256];
+    bool encontrado = false;
+    bool copiar = true;
+
+    while (fgets(linea, sizeof(linea), original)) {
+        if (strncmp(linea, "Cedula:", 7) == 0) {
+            char cedulaArchivo[20];
+            sscanf(linea, "Cedula: %19s", cedulaArchivo);
+
+            int i = 0;
+            while (cedulaBuscada[i] != '\0' && cedulaArchivo[i] != '\0') {
+                if (cedulaBuscada[i] != cedulaArchivo[i]) break;
+                i++;
+            }
+            
+            if (cedulaBuscada[i] == '\0' && cedulaArchivo[i] == '\0') {
+                encontrado = true;
+                copiar = false;
+            } else {
+                copiar = true;
+            }
+        }
+
+        if (copiar) {
+            fputs(linea, temp);
+        }
+
+        if (linea[0] == ';') {
+            copiar = true;
+        }
+    }
+
+    fclose(original);
+    fclose(temp);
+
+    if (remove("Clientes.txt") != 0 || rename("Temp.txt", "Clientes.txt") != 0) {
+        perror("Error al actualizar archivo");
+        return;
+    }
+
+    if (encontrado) {
+        printf("\nCliente con cedula %s eliminado correctamente.\n\n", cedulaBuscada);
+    } else {
+        printf("\nNo se encontro cliente con cedula %s.\n\n", cedulaBuscada);
+    }
+}
+
+char* solicitarCedula() {
+    printf("Ingrese la cedula del cliente a eliminar: ");
+    return espacioDeMemoria();
 }

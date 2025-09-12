@@ -179,6 +179,7 @@ void inventarioDePrograma() {
         printf("Ingresa el NUMERO de alguna de las opciones:\n\n");
         printf("1. Eliminar libro\n");
         printf("2. Modificar Inventario (no implementado)\n");
+        printf("3. Eliminar cliente\n");
         printf("6. Volver\n");
 
         scanf("%d", &opcion);
@@ -197,6 +198,15 @@ void inventarioDePrograma() {
 
             case 2: {
 
+            }
+
+            case 3: {
+                char* cedula = solicitarCedula();
+                eliminarCliente(cedula);
+                free(cedula);
+                system("pause");
+                printf("\n");
+                break;
             }
             case 6:
                 return;

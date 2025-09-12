@@ -18,6 +18,8 @@ void registrarCliente();
 bool validarCedulaUnica(const char* cedula);
 bool validarTelefono(const char* telefono);
 void guardarClienteEnTXT(Cliente *cli);
-void LiberarMemoriaCliente(Cliente *cli);
+void liberarMemoriaCliente(Cliente *cli);
+void eliminarCliente(const char* cedulaBuscada);
+char* solicitarCedula();
 
 #endif
