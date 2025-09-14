@@ -1,12 +1,1 @@
-Cedula: 703010042
-Nombre: Jareck Levell Cordero
-Telefono: 85781536
-;
-Cedula: 234567890
-Nombre: Mirta Fallas Rojas
-Telefono: 12345678
-;
-Cedula: 090990909
-Nombre: Quiriat Mata Zey
-Telefono: 87654321
-;
+
