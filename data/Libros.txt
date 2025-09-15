@@ -1,0 +1,15 @@
+Codigo: LIB1
+Nombre: HP1
+Precio: 20000.00
+Cantidad: 5
+;
+Codigo: LIB2
+Nombre: HP2
+Precio: 22999.00
+Cantidad: 7
+;
+Codigo: LIB3
+Nombre: HP3
+Precio: 25000.00
+Cantidad: 3
+;
