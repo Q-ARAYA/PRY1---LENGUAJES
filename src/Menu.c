@@ -1,6 +1,7 @@
-#include "Menu.h"
-#include "Libro.h"
-#include "Cliente.h"
+#include "../headers/Menu.h"
+#include "../headers/Libro.h"
+#include "../headers/Cliente.h"
+#include "../headers/Pedido.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,7 +30,7 @@ int menuInicial() {
                 printf("Saliendo...\n");
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }
@@ -57,7 +58,7 @@ int menuGeneral() {
             menuInicial();
             return 0;
         default:
-            printf("Opción inválida.\n");
+            printf("Opcion invalida.\n");
     }
 }
 
@@ -102,7 +103,7 @@ int menuAdministrativo() {
             case 6:
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }
@@ -140,7 +141,7 @@ int menuInventario() {
             case 4:
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }
@@ -163,21 +164,28 @@ int menuPedidos() {
         
         switch (opcion) {
             case 1:
-                printf("En desarrollo");
+                gestionarPedido();
                 break;
-            case 2:
-                printf("En desarrollo");
+            case 2: {
+                printf("Ingrese el numero de pedido a eliminar: ");
+                int numeroPedido;
+                scanf("%d", &numeroPedido);
+                getchar(); // Limpiar buffer
+                eliminarPedido(numeroPedido);
+                system("pause");
                 break;
+            }
             case 3:
                 printf("En desarrollo");
                 break;
             case 4:
-                printf("En desarrollo");
+                consultarPedidos();
+                system("pause");
                 break;
             case 5:
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }

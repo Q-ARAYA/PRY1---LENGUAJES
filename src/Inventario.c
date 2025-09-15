@@ -3,10 +3,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include "../headers/Inventario.h"
-//#include "Operadores.c"
-//#include "Operadores.h"
-//#include "Consola.c"
-//#include "Consola.h"
 #include "../headers/Menu.h"
 
 
