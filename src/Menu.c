@@ -2,6 +2,7 @@
 #include "../headers/Libro.h"
 #include "../headers/Cliente.h"
 #include "../headers/Pedido.h"
+#include "../headers/Inventario.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -56,10 +57,12 @@ int menuGeneral() {
             break;
         case 3: // Salir
             menuInicial();
+            //break;
             return 0;
         default:
             printf("Opcion invalida.\n");
     }
+    return 0;
 }
 
 int menuAdministrativo() {
@@ -136,6 +139,8 @@ int menuInventario() {
                 break;
             }
             case 3:
+                iniciarActualizacionDeStock();
+                system("pause");
                 printf("En desarrollo");
                 break;
             case 4:
@@ -176,7 +181,10 @@ int menuPedidos() {
                 break;
             }
             case 3:
+                iniciarActualizacionDeStock();
+                system("pause");
                 printf("En desarrollo");
+                //return 0;
                 break;
             case 4:
                 consultarPedidos();
@@ -188,4 +196,5 @@ int menuPedidos() {
                 printf("Opcion invalida.\n");
         }
     }
+    return 0;
 }
