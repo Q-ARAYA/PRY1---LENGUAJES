@@ -2,6 +2,7 @@
 #include "../headers/Libro.h"
 #include "../headers/Cliente.h"
 #include "../headers/Pedido.h"
+#include "../headers/Estadisticas.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -98,7 +99,7 @@ int menuAdministrativo() {
                 menuPedidos();
                 break;
             case 5:
-                printf("En desarrollo");
+                menuEstadisticas();
                 break;
             case 6:
                 return 0;
@@ -187,5 +188,38 @@ int menuPedidos() {
             default:
                 printf("Opcion invalida.\n");
         }
+    }
+}
+
+int menuEstadisticas() {
+    int opcion;
+
+    while(1) {
+        printf("\n------------------------------\n");
+        printf("   MENU DE ESTADISTICAS\n");
+        printf("------------------------------\n");
+        printf("1. Total de ventas realizadas\n"); 
+        printf("2. Clientes con mas pedidos\n");
+        printf("3. Libros mas vendidos\n");
+        printf("4. Volver al menu administrativo\n");
+        printf("Seleccione una Opcion: ");
+        scanf("%d", &opcion);
+        getchar();
+        
+        switch (opcion) {
+            case 1:
+                calcularTotalVentas();
+                break;
+            case 2:
+                clientesConMasPedidos();
+                break;
+            case 3:
+                librosMasVendidos();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Opcion invalida");
+        }     
     }
 }
