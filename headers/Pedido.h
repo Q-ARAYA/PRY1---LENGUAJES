@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "Cliente.h"
-#include "Libro.h"
+#include "../headers/Cliente.h"
+#include "../headers/Libro.h"
 
 // Macros para configuración
 #define ARCHIVO_PEDIDOS "data/Pedidos.txt"
