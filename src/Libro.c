@@ -132,7 +132,13 @@ void eliminarLibro(const char* codigoBuscado){
         return;
     }
 
-    char linea[256];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    if (!linea) {
+        printf("Error en la asignación de memoria\n");
+        fclose(original);
+        fclose(temp);
+        return;
+    }
     bool encontrado = false;
     bool copiar = true;
 
@@ -183,8 +189,15 @@ void consultarCatalogo() {
     printf("CODIGO | NOMBRE                 | PRECIO    | CANTIDAD\n");
     printf("-----------------------------------------------------------\n");
     
-    char linea[256];
-    char nombre[100];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    char *nombre = (char*)malloc(100 * sizeof(char));
+    if (!linea || !nombre) {
+        printf("Error en la asignación de memoria\n");
+        if (linea) free(linea);
+        if (nombre) free(nombre);
+        fclose(archi);
+        return;
+    }
     float precio;
     int codigo, cantidad;
     

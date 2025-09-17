@@ -14,7 +14,12 @@ static bool obtenerInfoLibro(int codigoLibro, char **nombre, float *precio, int 
     FILE *archivo = fopen(ARCHIVO_LIBROS, "r");
     if (!archivo) return false;
 
-    char linea[256];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    if (!linea) {
+        printf("Error en la asignación de memoria\n");
+        fclose(archivo);
+        return false;
+    }
     bool encontrado = false;
     *nombre = NULL;
     *precio = 0;
@@ -29,9 +34,16 @@ static bool obtenerInfoLibro(int codigoLibro, char **nombre, float *precio, int 
                 
                 // Leer nombre
                 fgets(linea, sizeof(linea), archivo);
-                char nombreTemp[100];
+                char *nombreTemp = (char*)malloc(100 * sizeof(char));
+                if (!nombreTemp) {
+                    printf("Error en la asignación de memoria\n");
+                    free(linea);
+                    fclose(archivo);
+                    return false;
+                }
                 sscanf(linea, "Nombre: %[^\n]", nombreTemp);
                 *nombre = strdup(nombreTemp);
+                free(nombreTemp);
                 
                 // Leer precio
                 fgets(linea, sizeof(linea), archivo);
@@ -319,8 +331,12 @@ void generarPedido(Pedido *ped) {
     // Generar fecha actual
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    char fechaStr[20];
-    strftime(fechaStr, sizeof(fechaStr), "%d/%m/%Y", tm);
+    char *fechaStr = (char*)malloc(20 * sizeof(char));
+    if (!fechaStr) {
+        printf("Error en la asignación de memoria\n");
+        return;
+    }
+    strftime(fechaStr, 20, "%d/%m/%Y", tm);
     ped->fecha = strdup(fechaStr);
     
     // Asignar número de pedido
@@ -366,7 +382,11 @@ static Pedido* leerPedido(FILE* archivo) {
         
         if (leyendoDetalle && strstr(linea, "|")) {
             int numeroLinea, codigoLibro, cantidad;
-            char nombreLibro[100];
+            char *nombreLibro = (char*)malloc(100 * sizeof(char));
+            if (!nombreLibro) {
+                printf("Error en la asignación de memoria\n");
+                return NULL;
+            }
             float precioUnitario, subtotal;
             
             sscanf(linea, "%d | LIB%d | %[^|] | %d | ₡%f | ₡%f",
@@ -379,6 +399,7 @@ static Pedido* leerPedido(FILE* archivo) {
             *(end + 1) = '\0';
             
             agregarLineaPedido(ped, codigoLibro, cantidad);
+            free(nombreLibro);
         }
     }
     
@@ -516,10 +537,18 @@ void consultarPedidos() {
         return;
     }
     
-    char linea[256];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    char *cedula = (char*)malloc(50 * sizeof(char));
+    char *fecha = (char*)malloc(20 * sizeof(char));
+    if (!linea || !cedula || !fecha) {
+        printf("Error en la asignación de memoria\n");
+        if (linea) free(linea);
+        if (cedula) free(cedula);
+        if (fecha) free(fecha);
+        fclose(archi);
+        return;
+    }
     int numeroPedido;
-    char cedula[50];
-    char fecha[20];
     bool mostrandoEncabezado = true;
     float subtotal = 0, impuesto = 0, total = 0;
     
@@ -583,6 +612,8 @@ void consultarPedidos() {
         printf("Total: %.2f\n\n", total);
     }
     
+    free(linea);
+    free(cedula);
     fclose(archi);
 }
 
@@ -652,8 +683,15 @@ void mostrarPedidosPorCedula(const char* cedulaBuscada) {
     
     printf("=== PEDIDOS DEL CLIENTE ===\n");
     
-    char linea[256];
-    char cedula[50];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    char *cedula = (char*)malloc(50 * sizeof(char));
+    if (!linea || !cedula) {
+        printf("Error en la asignación de memoria\n");
+        if (linea) free(linea);
+        if (cedula) free(cedula);
+        fclose(archi);
+        return;
+    }
     int numeroPedido = 0;
     bool pedidoEncontrado = false;
     bool mostrandoPedido = false;

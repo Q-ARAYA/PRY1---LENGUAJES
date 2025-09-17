@@ -3,6 +3,7 @@
 #include "../headers/Cliente.h"
 #include "../headers/Pedido.h"
 #include "../headers/Estadisticas.h"
+#include "../headers/Inventario.h"
 #include <stdio.h>
 #include <stdlib.h>
 

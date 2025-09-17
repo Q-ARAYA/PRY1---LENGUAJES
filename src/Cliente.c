@@ -19,8 +19,15 @@ bool validarCedulaUnica(const char* cedula) {
     FILE *archi = fopen(ARCHIVO_CLIENTES, "r");
     if (!archi) return true; // Si no existe archivo, la cédula es única
     
-    char linea[100];
-    char cedulaArchivo[20];
+    char *linea = (char*)malloc(100 * sizeof(char));
+    char *cedulaArchivo = (char*)malloc(20 * sizeof(char));
+    if (!linea || !cedulaArchivo) {
+        printf("Error en la asignación de memoria\n");
+        if (linea) free(linea);
+        if (cedulaArchivo) free(cedulaArchivo);
+        fclose(archi);
+        return true;
+    }
     bool esUnica = true;
     
     while (fgets(linea, sizeof(linea), archi)) {
@@ -37,6 +44,8 @@ bool validarCedulaUnica(const char* cedula) {
         }
     }
 
+    free(linea);
+    free(cedulaArchivo);
     fclose(archi);
     return esUnica;
 }
@@ -136,7 +145,13 @@ void eliminarCliente(const char* cedulaBuscada) {
         return;
     }
 
-    char linea[256];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    if (!linea) {
+        printf("Error en la asignación de memoria\n");
+        fclose(original);
+        fclose(temp);
+        return;
+    }
     bool encontrado = false;
     bool copiar = true;
 

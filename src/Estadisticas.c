@@ -12,7 +12,12 @@ void calcularTotalVentas() {
         return;
     }
 
-    char linea[256];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    if (!linea) {
+        printf("Error en la asignación de memoria\n");
+        fclose(archi);
+        return;
+    }
     int totalPedido = 0;
     float montoTotal = 0;
     float monto2023 = 0, monto2024 = 0, monto2025 = 0;
@@ -35,6 +40,7 @@ void calcularTotalVentas() {
     }
 
     fclose(archi);
+    free(linea);
     
     printf("\n=== TOTAL DE VENTAS ===\n");
     printf("Pedidos totales: %d\n", totalPedido);
@@ -68,7 +74,12 @@ void clientesConMasPedidos() {
     }
 
     int totalClientes = 0;
-    char linea[256];
+    char *linea = (char*)malloc(256 * sizeof(char));
+    if (!linea) {
+        printf("Error en la asignación de memoria\n");
+        fclose(archiClientes);
+        return;
+    }
     while (fgets(linea, sizeof(linea), archiClientes)) {
         if (strstr(linea, "Cedula:")) totalClientes++;
     }
@@ -111,12 +122,17 @@ void clientesConMasPedidos() {
     if (archiPedidos) {
         while (fgets(linea, sizeof(linea), archiPedidos)) {
             if (strstr(linea, "Cedula del Cliente:")) {
-                char cedula[20];
+                char *cedula = (char*)malloc(20 * sizeof(char));
+                if (!cedula) {
+                    printf("Error en la asignación de memoria\n");
+                    continue;
+                }
                 sscanf(linea, "Cedula del Cliente: %19s", cedula);
                 
                 for (int j = 0; j < totalClientes; j++) {
                     if (strcmp(clientes[j].cedula, cedula) == 0) {
                         clientes[j].pedidos++;
+                        free(cedula);
                         break;
                     }
                 }
