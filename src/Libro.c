@@ -203,7 +203,7 @@ void consultarCatalogo() {
     
     while (fgets(linea, sizeof(linea), archi)) {
         if (sscanf(linea, "Codigo: LIB%d", &codigo) == 1) {
-            // Leer las siguientes líneas del registro
+            
             fgets(linea, sizeof(linea), archi);
             sscanf(linea, "Nombre: %[^\n]", nombre);
             

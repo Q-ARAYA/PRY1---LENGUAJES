@@ -8,18 +8,18 @@
 #include "Libro.h"
 
 typedef struct {
-    char cedula[20];
-    char nombre[100];
-    int pedidos;
+    char *cedula;   // Puntero dinámico para la cédula
+    char *nombre;   // Puntero dinámico para el nombre
+    int pedidos;    // Contador de pedidos
 } ClienteEstadistica;
 
 typedef struct {
     int codigo;
-    char nombre[100];
+    char *nombre;  
     int vendidos;
 } LibroEstadistica;
 
-// Prototipos de funciones
+
 void calcularTotalVentas();
 void clientesConMasPedidos();
 void librosMasVendidos();

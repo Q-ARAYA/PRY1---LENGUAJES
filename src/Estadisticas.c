@@ -102,6 +102,23 @@ void clientesConMasPedidos() {
     int i = 0;
     while (fgets(linea, sizeof(linea), archiClientes)) {
         if (strstr(linea, "Cedula:")) {
+            // Asignar memoria para cedula y nombre
+            clientes[i].cedula = (char*)malloc(20 * sizeof(char));
+            clientes[i].nombre = (char*)malloc(100 * sizeof(char));
+            if (!clientes[i].cedula || !clientes[i].nombre) {
+                printf("Error en la asignación de memoria\n");
+                // Liberar memoria ya asignada
+                for (int j = 0; j < i; j++) {
+                    free(clientes[j].cedula);
+                    free(clientes[j].nombre);
+                }
+                if (clientes[i].cedula) free(clientes[i].cedula);
+                if (clientes[i].nombre) free(clientes[i].nombre);
+                free(clientes);
+                fclose(archiClientes);
+                return;
+            }
+            
             sscanf(linea, "Cedula: %19s", clientes[i].cedula);
             
             fgets(linea, sizeof(linea), archiClientes);
@@ -156,6 +173,11 @@ void clientesConMasPedidos() {
                i + 1, clientes[i].cedula, clientes[i].nombre, clientes[i].pedidos);
     }
     
+    // Liberar memoria de cada cliente
+    for (int i = 0; i < totalClientes; i++) {
+        free(clientes[i].cedula);
+        free(clientes[i].nombre);
+    }
     free(clientes);
 }
 
@@ -188,6 +210,19 @@ void librosMasVendidos() {
     while (fgets(linea, sizeof(linea), archiLibros)) {
         if (strstr(linea, "Codigo:")) {
             sscanf(linea, "Codigo: LIB%d", &libros[i].codigo);
+            
+            // Asignar memoria para el nombre
+            libros[i].nombre = (char*)malloc(100 * sizeof(char));
+            if (!libros[i].nombre) {
+                printf("Error en la asignación de memoria\n");
+                // Liberar memoria ya asignada
+                for (int j = 0; j < i; j++) {
+                    free(libros[j].nombre);
+                }
+                free(libros);
+                fclose(archiLibros);
+                return;
+            }
             
             fgets(linea, sizeof(linea), archiLibros);
             sscanf(linea, "Nombre: %99[^\n]", libros[i].nombre);
@@ -251,5 +286,9 @@ void librosMasVendidos() {
                i + 1, libros[i].codigo, libros[i].nombre, libros[i].vendidos);
     }
     
+    // Liberar memoria de cada libro
+    for (int i = 0; i < totalLibros; i++) {
+        free(libros[i].nombre);
+    }
     free(libros);
 }
