@@ -4,6 +4,7 @@
 #include "../headers/Pedido.h"
 #include "../headers/Estadisticas.h"
 #include "../headers/Inventario.h"
+#include "../headers/Admin.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,7 +27,9 @@ int menuInicial() {
                 menuGeneral();
                 break;
             case 2: // Opciones Administrativas
-                menuAdministrativo();
+                if (loginAdministrativo()) {
+                    menuAdministrativo();
+                };
                 break;
             case 3: // Salir
                 printf("Saliendo...\n");
@@ -35,6 +38,10 @@ int menuInicial() {
                 printf("Opcion invalida.\n");
         }
     }
+}
+
+int loginAdministrativo() {
+    return autenticarAdministrativo();
 }
 
 int menuGeneral() {
